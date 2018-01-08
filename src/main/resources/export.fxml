@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.cnes.sonar.report.ui.ExportController">
+   <children>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <MenuBar BorderPane.alignment="CENTER">
+               <menus>
+                  <Menu mnemonicParsing="false" text="File">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Edit">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Delete" />
+                     </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Help">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                     </items>
+                  </Menu>
+               </menus>
+            </MenuBar>
+         </top>
+         <center>
+            <AnchorPane BorderPane.alignment="CENTER">
+               <children>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label text="SonarQube host" />
+                        <AnchorPane>
+                           <children>
+                              <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <TextField fx:id="hostField" promptText="Ex: https://sonarqube:9000/" HBox.hgrow="ALWAYS" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </AnchorPane>
+                        <Label text="Project id" />
+                        <TextField fx:id="projectIdField" />
+                        <Label text="Output folder" />
+                        <AnchorPane>
+                           <children>
+                              <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <TextField fx:id="outputField" promptText="Ex: C:\Temp\out" HBox.hgrow="ALWAYS" />
+                                    <Button fx:id="outputBrowseButton" mnemonicParsing="false" onAction="#browseOutputFolder" text="..." />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </AnchorPane>
+                        <Label text="Author's name" />
+                        <TextField fx:id="authorField" />
+                        <Label text="Date" />
+                        <AnchorPane>
+                           <children>
+                              <DatePicker fx:id="dateBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                        <Label text="Report's language" />
+                        <AnchorPane>
+                           <children>
+                              <ComboBox fx:id="languageBox" editable="true" prefWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                        <Label text="Report template (Word)" />
+                        <AnchorPane>
+                           <children>
+                              <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <TextField fx:id="wordBrowseField" promptText="Ex: C:\template.docx" HBox.hgrow="ALWAYS" />
+                                    <Button fx:id="wordBrowseButton" mnemonicParsing="false" onAction="#browseWordTemplate" text="..." />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </AnchorPane>
+                        <Label text="Issues template (Excel)" />
+                        <AnchorPane>
+                           <children>
+                              <HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <TextField fx:id="excelBrowseField" promptText="Ex: C:\issues-template.xlsx" HBox.hgrow="ALWAYS" />
+                                    <Button fx:id="excelBrowseButton" mnemonicParsing="false" onAction="#browseExcelTemplate" text="..." />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </AnchorPane>
+                        <Label text="Files to export">
+                           <VBox.margin>
+                              <Insets top="11.0" />
+                           </VBox.margin></Label>
+                        <HBox>
+                           <children>
+                              <CheckBox fx:id="reportCheckbox" mnemonicParsing="false" selected="true" text="Report">
+                                 <padding>
+                                    <Insets right="11.0" />
+                                 </padding>
+                              </CheckBox>
+                              <CheckBox fx:id="issuesCheckbox" mnemonicParsing="false" selected="true" text="Issues">
+                                 <padding>
+                                    <Insets right="11.0" />
+                                 </padding>
+                              </CheckBox>
+                              <CheckBox fx:id="confCheckbox" mnemonicParsing="false" text="Configuration">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets right="11.0" />
+                                 </padding>
+                              </CheckBox>
+                           </children>
+                           <opaqueInsets>
+                              <Insets right="11.0" />
+                           </opaqueInsets>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="11.0" left="11.0" right="11.0" top="11.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </center>
+         <bottom>
+            <AnchorPane BorderPane.alignment="CENTER">
+               <children>
+                  <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <buttons>
+                        <Button fx:id="resetButton" mnemonicParsing="false" onAction="#resetForm" text="Reset" />
+                        <Button fx:id="generateButton" mnemonicParsing="false" onAction="#generateReport" text="Generate" />
+                     </buttons>
+                     <padding>
+                        <Insets right="11.0" />
+                     </padding>
+                  </ButtonBar>
+               </children>
+            </AnchorPane>
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>
