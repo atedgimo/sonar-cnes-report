@@ -33,7 +33,12 @@ import java.io.IOException;
  */
 public class ProjectProvider extends AbstractDataProvider {
 
-	/**
+    /**
+     * Field to extract in project
+     */
+    public static final String PROFILES = "profiles";
+
+    /**
 	 * Used to get language data for the projects
 	 */
     private LanguageProvider languageProvider;
@@ -60,14 +65,19 @@ public class ProjectProvider extends AbstractDataProvider {
     public Project getProject(String projectKey) throws IOException, BadSonarQubeRequestException {
         // send a request to sonarqube server and return th response as a json object
         // if there is an error on server side this method throws an exception
-        final JsonObject jo = request(String.format(getRequest(GET_PROJECT_REQUEST),
+        JsonObject jo = request(String.format(getRequest(GET_PROJECT_REQUEST),
                 getUrl(), projectKey));
 
         // put json in a Project class
         final Project project = (getGson().fromJson(jo, Project.class));
 
+        // retrieve quality profiles for SQ 5.X versions
+        jo = request(String.format(getRequest(GET_PROJECT_QUALITY_PROFILES_REQUEST),
+                getUrl(), projectKey));
+
         // set language's name for profiles
-        final ProfileMetaData[] metaData = project.getQualityProfiles();
+        final ProfileMetaData[] metaData = (getGson().fromJson(jo.getAsJsonArray(PROFILES), ProfileMetaData[].class));
+        project.setQualityProfiles(metaData);
         String languageName;
         for(ProfileMetaData it : metaData){
             languageName = languageProvider.getLanguage(it.getLanguage());

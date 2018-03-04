@@ -21,11 +21,14 @@ import com.google.gson.JsonObject;
 import fr.cnes.sonar.report.exceptions.BadSonarQubeRequestException;
 import fr.cnes.sonar.report.exceptions.UnknownParameterException;
 import fr.cnes.sonar.report.exceptions.UnknownQualityGateException;
+import fr.cnes.sonar.report.input.StringManager;
+import fr.cnes.sonar.report.model.Project;
 import fr.cnes.sonar.report.model.QualityGate;
 import fr.cnes.sonar.report.input.Params;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -36,13 +39,9 @@ import java.util.List;
 public class QualityGateProvider extends AbstractDataProvider {
 
     /**
-     * Field to find in json
+     * Field to find in json response
      */
-    private static final String QUALITY_GATE = "qualityGate";
-    /**
-     * Field to find in json corresponding to the quality gate's id
-     */
-    private static final String KEY = "key";
+    private static final String RESULTS = "results";
 
     /**
      * Complete constructor
@@ -112,27 +111,46 @@ public class QualityGateProvider extends AbstractDataProvider {
         // get all the quality gates
         final List<QualityGate> qualityGates = getQualityGates();
         // request the criteria
-        final String request = String.format(getRequest(GET_QUALITY_GATE_REQUEST),
+        String request = String.format(getRequest(GET_QUALITY_GATE_REQUEST),
                 getUrl(), getProjectKey());
 
         // perform previous request
         final JsonObject jo = request(request);
-        final String key = jo.getAsJsonObject(QUALITY_GATE)
-                .get(KEY).getAsString();
+        final Project project = getGson().fromJson(jo, Project.class);
 
         // search for the good quality gate
         final Iterator<QualityGate> iterator = qualityGates.iterator();
+        Iterator<Project> iteratorOnProjects;
+        JsonObject response;
+        Project[] projects;
+        Project tmpProject;
         while (iterator.hasNext() && !find) {
             tmp = iterator.next();
-            if(tmp.getId().equals(key)) {
+
+            // In version 5.X if the quality gate is the default one:
+            // quality gate and project are not linked to each other
+            // so we set default qg if we found no corresponding gate
+            if(tmp.isDefault()) {
                 res = tmp;
-                find = true;
+            }
+
+            request = String.format(getRequest(QUALITY_GATE_PROJECTS_REQUEST),
+                    getUrl(), tmp.getId(), project.getName());
+            response = request(request);
+            projects = (getGson().fromJson(response.getAsJsonArray(RESULTS), Project[].class));
+            iteratorOnProjects = Arrays.asList(projects).iterator();
+            while (iteratorOnProjects.hasNext() && !find) {
+                tmpProject = iteratorOnProjects.next();
+                if (tmpProject.getName().equals(project.getName())) {
+                    res = tmp;
+                    find = true;
+                }
             }
         }
 
         // check if it was found
-        if(!find) {
-            throw new UnknownQualityGateException(key);
+        if(!find && res != null) {
+            throw new UnknownQualityGateException(StringManager.EMPTY);
         }
 
         return res;

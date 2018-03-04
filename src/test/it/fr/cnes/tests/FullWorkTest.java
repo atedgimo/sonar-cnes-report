@@ -15,7 +15,7 @@
 // * along with cnesreport.  If not, see <http://www.gnu.org/licenses/>.
 // */
 //
-//package fr.cnes.tests;
+//package fr.cnes.sonar.tests;
 //
 //import fr.cnes.sonar.report.ReportCommandLine;
 //import fr.cnes.sonar.report.exceptions.BadExportationDataTypeException;

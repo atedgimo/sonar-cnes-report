@@ -15,9 +15,8 @@
  * along with cnesreport.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fr.cnes.tests;
+package fr.cnes.sonar.tests;
 
-import fr.cnes.sonar.report.exceptions.UnknownParameterException;
 import fr.cnes.sonar.report.input.Params;
 import org.junit.Before;
 
@@ -37,20 +36,18 @@ public class MasterTest {
 
     /**
      * Setting of all stubbed resources before launching a test
-	 * @throws IOException propagate error on file exception
-	 * @throws UnknownParameterException propagate error on argument exception
 	 */
     @Before
-    public void before() throws IOException, UnknownParameterException {
+    public void before() {
         // create stubbed params
         params = new Params();
-        params.put("sonar.url", "http://sonarqube:9000");
-        params.put("sonar.project.id", "false");
+        params.put("sonar.url", "http://localhost:9000");
+        params.put("sonar.project.id", "Sonar");
         params.put("report.author", "Lequal");
         params.put("report.date", new Date().toString());
         params.put("report.path", "./target");
         params.put("report.locale", "fr_FR");
-        params.put("report.template", "src/main/resources/template/cnes-code-analysis-template.docx");
+        params.put("report.template", "src/main/resources/template/code-analysis-template.docx");
         params.put("issues.template", "src/main/resources/template/issues-template.xlsx");
 
     }
